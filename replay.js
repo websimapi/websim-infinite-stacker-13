@@ -13,10 +13,10 @@ export class ReplayRecorder {
 
             const mimeTypes = isFirefox 
             ? [ // Prioritize VP8 for Firefox for better compatibility
-                'video/webm;codecs=vp8,opus',
                 'video/webm;codecs=vp8',
-                'video/webm;codecs=vp9,opus',
+                'video/webm;codecs=vp8,opus',
                 'video/webm;codecs=vp9',
+                'video/webm;codecs=vp9,opus',
                 'video/webm',
             ]
             : [ // Default order for other browsers
@@ -36,7 +36,7 @@ export class ReplayRecorder {
 
             this.mediaRecorder = new MediaRecorder(stream, {
                 mimeType: supportedMimeType,
-                videoBitsPerSecond: 5000000,
+                videoBitsPerSecond: isFirefox ? undefined : 5000000,
             });
 
             this.mediaRecorder.ondataavailable = (e) => {
